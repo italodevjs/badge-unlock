@@ -1,2 +1,5 @@
 # badge-unlock
-Repositório para desbloqueio de badges do GitHub
+
+Repositorio para desbloqueio de badges.
+
+## Pull Shark #1

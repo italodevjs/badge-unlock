@@ -149,7 +149,8 @@ body{
 .tx-list.big{gap:10px}
 .tx{display:flex;align-items:center;gap:12px;padding:10px 4px}
 .tx-list.big .tx{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px}
-.tx-ic{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;font-size:20px;background:var(--card-2);flex:none}
+.tx-ic{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;flex:none;overflow:hidden}
+.card-art{display:block;width:42px;height:42px;border-radius:12px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
 .tx-main{flex:1;min-width:0}
 .tx-title{font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .tx-sub{font-size:12px;color:var(--muted)}

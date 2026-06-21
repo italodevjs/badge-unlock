@@ -98,7 +98,7 @@ body{
   top:-110px;right:-70px;filter:blur(6px);
 }
 .balance-top{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:14px;position:relative}
-.demo-tag{display:inline-block;margin-left:6px;background:rgba(255,178,62,.16);color:var(--warn);font-size:10px;font-weight:800;letter-spacing:.5px;padding:2px 7px;border-radius:6px;vertical-align:middle}
+.demo-footer{text-align:center;font-size:11px;color:var(--muted);opacity:.55;margin:6px 0 0;padding:0 10px}
 .eye-btn{background:none;border:none;font-size:16px;cursor:pointer;opacity:.8}
 .balance-value{font-size:38px;font-weight:800;letter-spacing:-1px;margin:6px 0 18px;position:relative}
 .balance-row{display:flex;gap:14px;position:relative}

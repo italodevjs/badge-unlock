@@ -1,12 +1,3 @@
-# badge-unlock
-
-Repositorio para desbloqueio de badges.
-
-## Pull Shark #1
-## Pull Shark #2
-
----
-
 # PagFlux ⚡ — Protótipo de Gateway de Pagamento (PWA)
 
 Protótipo realista de um app de gateway de pagamento no estilo Kiwify / GhostsPay,

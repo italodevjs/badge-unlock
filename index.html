@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>PagFlux — Sua conta digital</title>
+  <meta name="description" content="PagFlux — receba por vendas de giftcards e produtos digitais com saque via PIX." />
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.webmanifest" />
+  <meta name="theme-color" content="#0B0E14" />
+
+  <!-- iOS: vira app fodástico na tela inicial -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="PagFlux" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png" />
+  <link rel="icon" type="image/png" sizes="512x512" href="icons/icon-512.png" />
+
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <!-- Splash -->
+  <div id="splash" class="splash">
+    <div class="splash-logo">
+      <div class="logo-mark"><span>⚡</span></div>
+      <div class="logo-text">Pag<b>Flux</b></div>
+    </div>
+    <div class="splash-spinner"></div>
+  </div>
+
+  <!-- App shell -->
+  <div id="app" class="app hidden">
+
+    <!-- ============ INÍCIO ============ -->
+    <section class="screen active" data-screen="inicio">
+      <header class="topbar">
+        <div class="topbar-user">
+          <div class="avatar">IC</div>
+          <div>
+            <div class="hello">Olá, Ítalo 👋</div>
+            <div class="hello-sub">Conta verificada • Nível 3</div>
+          </div>
+        </div>
+        <button class="icon-btn" id="btn-bell" aria-label="Notificações">
+          🔔<span class="badge-dot"></span>
+        </button>
+      </header>
+
+      <div class="screen-body">
+        <!-- Saldo -->
+        <div class="balance-card">
+          <div class="balance-glow"></div>
+          <div class="balance-top">
+            <span>Saldo a receber</span>
+            <button class="eye-btn" id="eye-btn" aria-label="Mostrar/ocultar saldo">👁️</button>
+          </div>
+          <div class="balance-value" id="balance-pending">R$ 134.000,00</div>
+          <div class="balance-row">
+            <div>
+              <div class="balance-label">Disponível p/ saque</div>
+              <div class="balance-amount" id="balance-available">R$ 28.450,00</div>
+            </div>
+            <div>
+              <div class="balance-label">Liberando hoje</div>
+              <div class="balance-amount up" id="balance-today">+ R$ 6.200,00</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Ações rápidas -->
+        <div class="quick-actions">
+          <button class="qa" data-go="saque">
+            <span class="qa-ic">💸</span><span>Sacar</span>
+          </button>
+          <button class="qa" data-go="vendas">
+            <span class="qa-ic">📊</span><span>Vendas</span>
+          </button>
+          <button class="qa" id="qa-cobrar">
+            <span class="qa-ic">🔗</span><span>Cobrar</span>
+          </button>
+          <button class="qa" id="qa-extrato">
+            <span class="qa-ic">🧾</span><span>Extrato</span>
+          </button>
+        </div>
+
+        <!-- Stats -->
+        <div class="stat-grid">
+          <div class="stat">
+            <div class="stat-label">Faturamento (mês)</div>
+            <div class="stat-value">R$ 312.870</div>
+            <div class="stat-trend up">▲ 18,4%</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Vendas hoje</div>
+            <div class="stat-value">47</div>
+            <div class="stat-trend up">▲ 9</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Taxa aprovação</div>
+            <div class="stat-value">94,2%</div>
+            <div class="stat-trend up">▲ 1,1%</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Ticket médio</div>
+            <div class="stat-value">R$ 187</div>
+            <div class="stat-trend down">▼ 2,3%</div>
+          </div>
+        </div>
+
+        <!-- Gráfico -->
+        <div class="card">
+          <div class="card-head">
+            <h3>Faturamento — últimos 7 dias</h3>
+            <span class="pill">+18%</span>
+          </div>
+          <div class="chart" id="chart"></div>
+          <div class="chart-x" id="chart-x"></div>
+        </div>
+
+        <!-- Vendas recentes -->
+        <div class="card">
+          <div class="card-head">
+            <h3>Vendas recentes</h3>
+            <button class="link-btn" data-go="vendas">Ver todas</button>
+          </div>
+          <ul class="tx-list" id="recent-list"></ul>
+        </div>
+
+        <div class="spacer"></div>
+      </div>
+    </section>
+
+    <!-- ============ VENDAS ============ -->
+    <section class="screen" data-screen="vendas">
+      <header class="topbar simple">
+        <h2>Vendas</h2>
+        <button class="icon-btn" id="btn-filter">⚙️</button>
+      </header>
+      <div class="screen-body">
+        <div class="chips" id="chips">
+          <button class="chip active" data-filter="todas">Todas</button>
+          <button class="chip" data-filter="Pago">Pagas</button>
+          <button class="chip" data-filter="Pendente">Pendentes</button>
+          <button class="chip" data-filter="Estornado">Estornadas</button>
+        </div>
+        <ul class="tx-list big" id="sales-list"></ul>
+        <div class="spacer"></div>
+      </div>
+    </section>
+
+    <!-- ============ SAQUE ============ -->
+    <section class="screen" data-screen="saque">
+      <header class="topbar simple">
+        <h2>Sacar via PIX</h2>
+      </header>
+      <div class="screen-body">
+        <div class="withdraw-card">
+          <div class="wd-label">Disponível para saque</div>
+          <div class="wd-value" id="wd-available">R$ 28.450,00</div>
+          <div class="wd-input-wrap">
+            <span class="wd-currency">R$</span>
+            <input id="wd-input" class="wd-input" inputmode="decimal" placeholder="0,00" />
+          </div>
+          <div class="wd-quick">
+            <button data-amt="500">R$ 500</button>
+            <button data-amt="2000">R$ 2.000</button>
+            <button data-amt="10000">R$ 10.000</button>
+            <button data-amt="max">Tudo</button>
+          </div>
+          <div class="wd-pix">
+            <div class="wd-pix-label">Chave PIX de destino</div>
+            <div class="wd-pix-key">
+              <span>📧 caetanoitalo69@icloud.com</span>
+              <button class="link-btn" id="change-pix">Trocar</button>
+            </div>
+          </div>
+          <button class="btn-primary" id="btn-withdraw">Solicitar saque</button>
+          <p class="wd-note">Saques via PIX caem na hora • Sem taxas até R$ 50.000/dia</p>
+        </div>
+        <div class="spacer"></div>
+      </div>
+    </section>
+
+    <!-- ============ CONTA ============ -->
+    <section class="screen" data-screen="conta">
+      <header class="topbar simple">
+        <h2>Minha conta</h2>
+      </header>
+      <div class="screen-body">
+        <div class="profile">
+          <div class="avatar big">IC</div>
+          <div class="profile-name">Ítalo Caetano</div>
+          <div class="profile-sub">caetanoitalo69@icloud.com</div>
+          <div class="profile-badges">
+            <span class="vbadge">✔ Identidade</span>
+            <span class="vbadge">✔ PIX</span>
+            <span class="vbadge">✔ KYC Nível 3</span>
+          </div>
+        </div>
+        <ul class="menu">
+          <li><span>🏦 Contas e chaves PIX</span><span>›</span></li>
+          <li><span>🔒 Segurança e senha</span><span>›</span></li>
+          <li><span>🧾 Histórico de saques</span><span>›</span></li>
+          <li><span>📈 Relatórios</span><span>›</span></li>
+          <li><span>💬 Suporte</span><span>›</span></li>
+          <li><span>⚙️ Configurações</span><span>›</span></li>
+        </ul>
+        <div class="demo-note">
+          Protótipo / demonstração — dados fictícios. Não processa pagamentos reais.
+        </div>
+        <div class="spacer"></div>
+      </div>
+    </section>
+
+    <!-- Bottom nav -->
+    <nav class="tabbar">
+      <button class="tab active" data-go="inicio"><span>🏠</span>Início</button>
+      <button class="tab" data-go="vendas"><span>📊</span>Vendas</button>
+      <button class="tab fab" data-go="saque"><span>＋</span></button>
+      <button class="tab" data-go="conta"><span>👤</span>Conta</button>
+      <button class="tab" id="tab-more"><span>⋯</span>Mais</button>
+    </nav>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="toast"></div>
+
+  <!-- Sheet (modal) -->
+  <div id="sheet" class="sheet-overlay hidden">
+    <div class="sheet">
+      <div class="sheet-handle"></div>
+      <div id="sheet-content"></div>
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>

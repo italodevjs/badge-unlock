@@ -25,7 +25,7 @@
   <!-- Splash -->
   <div id="splash" class="splash">
     <div class="splash-logo">
-      <div class="logo-mark"><span>↗</span></div>
+      <div class="logo-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"/><path d="M8 7h9v9"/></svg></div>
       <div class="logo-text">Pag<b>Flux</b></div>
     </div>
     <div class="splash-spinner"></div>
@@ -40,12 +40,13 @@
         <div class="topbar-user">
           <div class="avatar">IC</div>
           <div>
-            <div class="hello">Olá, Ítalo 👋</div>
+            <div class="hello">Olá, Ítalo</div>
             <div class="hello-sub">Conta verificada • Nível 3</div>
           </div>
         </div>
         <button class="icon-btn" id="btn-bell" aria-label="Notificações">
-          🔔<span class="badge-dot"></span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+          <span class="badge-dot"></span>
         </button>
       </header>
 
@@ -55,7 +56,7 @@
           <div class="balance-glow"></div>
           <div class="balance-top">
             <span>Saldo a receber</span>
-            <button class="eye-btn" id="eye-btn" aria-label="Mostrar/ocultar saldo">👁️</button>
+            <button class="eye-btn" id="eye-btn" aria-label="Mostrar/ocultar saldo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg></button>
           </div>
           <div class="balance-value" id="balance-pending">R$ 134.000,00</div>
           <div class="balance-row">
@@ -73,16 +74,16 @@
         <!-- Ações rápidas -->
         <div class="quick-actions">
           <button class="qa" data-go="saque">
-            <span class="qa-ic">💸</span><span>Sacar</span>
+            <span class="qa-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2.5"/><circle cx="12" cy="12" r="2.5"/><path d="M6 9.5v5M18 9.5v5"/></svg></span><span>Sacar</span>
           </button>
           <button class="qa" data-go="vendas">
-            <span class="qa-ic">📊</span><span>Vendas</span>
+            <span class="qa-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><rect x="5" y="11" width="3" height="7" rx="1"/><rect x="10.5" y="6.5" width="3" height="11.5" rx="1"/><rect x="16" y="13.5" width="3" height="4.5" rx="1"/></svg></span><span>Vendas</span>
           </button>
           <button class="qa" id="qa-cobrar">
-            <span class="qa-ic">🔗</span><span>Cobrar</span>
+            <span class="qa-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7 0l2-2a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7 0l-2 2a5 5 0 0 0 7 7l1-1"/></svg></span><span>Cobrar</span>
           </button>
           <button class="qa" id="qa-extrato">
-            <span class="qa-ic">🧾</span><span>Extrato</span>
+            <span class="qa-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h12v20l-3-2-3 2-3-2-3 2z"/><path d="M9 7h6M9 11h6M9 15h4"/></svg></span><span>Extrato</span>
           </button>
         </div>
 
@@ -175,7 +176,7 @@
           <div class="wd-pix">
             <div class="wd-pix-label">Chave PIX de destino</div>
             <div class="wd-pix-key">
-              <span>📧 caetanoitalo69@icloud.com</span>
+              <span><svg class="inline-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 7l8.5 6 8.5-6"/></svg>caetanoitalo69@icloud.com</span>
               <button class="link-btn" id="change-pix">Trocar</button>
             </div>
           </div>
@@ -219,11 +220,11 @@
 
     <!-- Bottom nav -->
     <nav class="tabbar">
-      <button class="tab active" data-go="inicio"><span>🏠</span>Início</button>
-      <button class="tab" data-go="vendas"><span>📊</span>Vendas</button>
-      <button class="tab fab" data-go="saque"><span>＋</span></button>
-      <button class="tab" data-go="conta"><span>👤</span>Conta</button>
-      <button class="tab" id="tab-more"><span>⋯</span>Mais</button>
+      <button class="tab active" data-go="inicio"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg></span>Início</button>
+      <button class="tab" data-go="vendas"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><rect x="5" y="11" width="3" height="7" rx="1"/><rect x="10.5" y="6.5" width="3" height="11.5" rx="1"/><rect x="16" y="13.5" width="3" height="4.5" rx="1"/></svg></span>Vendas</button>
+      <button class="tab fab" data-go="saque"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></button>
+      <button class="tab" data-go="conta"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span>Conta</button>
+      <button class="tab" id="tab-more"><span><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></span>Mais</button>
     </nav>
   </div>
 

@@ -39,8 +39,9 @@ body{
 .logo-mark{
   width:74px;height:74px;border-radius:22px;
   background:var(--bg-2);border:1px solid var(--line);
-  display:grid;place-items:center;font-size:38px;font-weight:700;color:var(--accent);
+  display:grid;place-items:center;color:var(--accent);
 }
+.logo-mark svg{width:40px;height:40px}
 .logo-text{font-size:28px;font-weight:700;letter-spacing:-.5px}
 .logo-text b{background:linear-gradient(135deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent}
 .splash-spinner{
@@ -220,6 +221,13 @@ body{
   box-shadow:0 8px 24px rgba(0,229,153,.4);margin-bottom:6px;
 }
 .tab.fab span{font-size:28px;font-weight:300}
+/* ícones SVG da UI */
+.icon-btn svg{width:20px;height:20px}
+.eye-btn svg{width:18px;height:18px;display:block}
+.qa-ic svg{width:24px;height:24px;display:block}
+.tab span svg{width:24px;height:24px;display:block}
+.tab.fab span svg{width:28px;height:28px}
+.inline-ic{width:16px;height:16px;vertical-align:-3px;margin-right:5px}
 
 /* ---------- Toast ---------- */
 .toast{

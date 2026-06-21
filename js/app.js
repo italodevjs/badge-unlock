@@ -201,7 +201,7 @@ document.getElementById('btn-withdraw').addEventListener('click', () => {
   if (!valor || valor <= 0) return toast('Digite um valor para sacar.');
   if (valor > DISPONIVEL) return toast('Valor acima do disponível.');
   openSheet(`
-    <h3>Saque solicitado ✅</h3>
+    <h3>Saque solicitado</h3>
     <p>${BRL(valor)} será enviado via PIX para <b>caetanoitalo69@icloud.com</b>. Normalmente cai em segundos.</p>
     <button class="btn-primary" onclick="closeSheet()">Entendi</button>
     <p style="margin-top:14px;text-align:center;opacity:.5;font-size:11px">Protótipo — nenhum valor real é transferido.</p>

@@ -38,9 +38,8 @@ body{
 .splash-logo{display:flex;flex-direction:column;align-items:center;gap:14px}
 .logo-mark{
   width:74px;height:74px;border-radius:22px;
-  background:linear-gradient(135deg,var(--accent),var(--accent-2));
-  display:grid;place-items:center;font-size:34px;
-  box-shadow:0 12px 40px rgba(0,229,153,.35);
+  background:var(--bg-2);border:1px solid var(--line);
+  display:grid;place-items:center;font-size:38px;font-weight:700;color:var(--accent);
 }
 .logo-text{font-size:28px;font-weight:700;letter-spacing:-.5px}
 .logo-text b{background:linear-gradient(135deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent}

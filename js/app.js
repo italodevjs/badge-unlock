@@ -245,8 +245,9 @@ document.getElementById('btn-withdraw').addEventListener('click', () => {
   if (valor > conta.available) return toast('Valor acima do disponível.');
   if (!chave) return toast('Informe a chave PIX de destino.');
 
-  // desconta do disponível e persiste no banco
+  // desconta do disponível e do saldo total, e persiste no banco
   conta.available -= valor;
+  conta.pending = Math.max(0, conta.pending - valor);
   renderSaldos();
   salvarConta();
   if (sb) sb.from('pagflux_withdrawals').insert({ amount: valor, pix_type: tipo, pix_key: chave }).then(() => {}, () => {});
@@ -330,8 +331,9 @@ setInterval(() => {
   nova.status = 'Pago';
   VENDAS.unshift(nova);
   if (VENDAS.length > 80) VENDAS.pop();
-  // cada venda aprovada libera valor para saque
+  // cada venda aprovada soma ao saldo total e ao disponível para saque
   conta.available += nova.valor;
+  conta.pending += nova.valor;
   renderSaldos();
   salvarConta();
   renderRecentes();

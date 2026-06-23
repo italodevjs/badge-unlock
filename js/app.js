@@ -186,13 +186,54 @@ document.getElementById('chips').addEventListener('click', e => {
   renderVendas();
 });
 
+/* ---------- Banco de dados (Supabase) ---------- */
+const SB_URL = 'https://fhdecbihrigfdnybfzyh.supabase.co';
+const SB_KEY = 'sb_publishable_Ck4vPY6YAOk5SJ-WV7Pokg_AXKyE2QW';
+const sb = (window.supabase && window.supabase.createClient)
+  ? window.supabase.createClient(SB_URL, SB_KEY)
+  : null;
+
+const conta = { pending: 193480, available: 90000 };
+
+function renderSaldos() {
+  const setVal = (id, v) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.textContent = BRL(v);
+    if (el.dataset.real !== undefined) el.dataset.real = BRL(v);
+  };
+  setVal('balance-pending', conta.pending);
+  setVal('balance-available', conta.available);
+  setVal('wd-available', conta.available);
+}
+
+async function carregarConta() {
+  if (!sb) return;
+  try {
+    const { data } = await sb.from('pagflux_account').select('pending,available').eq('id', 1).single();
+    if (data) {
+      conta.pending = Number(data.pending);
+      conta.available = Number(data.available);
+      renderSaldos();
+    }
+  } catch (_) {}
+}
+
+async function salvarConta() {
+  if (!sb) return;
+  try {
+    await sb.from('pagflux_account')
+      .update({ pending: conta.pending, available: conta.available, updated_at: new Date().toISOString() })
+      .eq('id', 1);
+  } catch (_) {}
+}
+
 /* ---------- Saque ---------- */
-const DISPONIVEL = 28450;
 const wdInput = document.getElementById('wd-input');
 
 document.querySelectorAll('.wd-quick button').forEach(b =>
   b.addEventListener('click', () => {
-    const amt = b.dataset.amt === 'max' ? DISPONIVEL : Number(b.dataset.amt);
+    const amt = b.dataset.amt === 'max' ? conta.available : Number(b.dataset.amt);
     wdInput.value = amt.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
   }));
 
@@ -201,11 +242,19 @@ document.getElementById('btn-withdraw').addEventListener('click', () => {
   const chave = document.getElementById('pix-key').value.trim();
   const tipo = document.getElementById('pix-type').value;
   if (!valor || valor <= 0) return toast('Digite um valor para sacar.');
-  if (valor > DISPONIVEL) return toast('Valor acima do disponível.');
+  if (valor > conta.available) return toast('Valor acima do disponível.');
   if (!chave) return toast('Informe a chave PIX de destino.');
+
+  // desconta do disponível e persiste no banco
+  conta.available -= valor;
+  renderSaldos();
+  salvarConta();
+  if (sb) sb.from('pagflux_withdrawals').insert({ amount: valor, pix_type: tipo, pix_key: chave }).then(() => {}, () => {});
+
   openSheet(`
     <h3>Saque solicitado</h3>
     <p>${BRL(valor)} será enviado via PIX (${tipo}) para <b>${chave}</b>. O prazo de compensação varia de alguns minutos a alguns dias úteis.</p>
+    <p style="margin-top:8px">Disponível restante: <b>${BRL(conta.available)}</b></p>
     <button class="btn-primary" onclick="closeSheet()">Entendi</button>
     <p style="margin-top:14px;text-align:center;opacity:.5;font-size:11px">Protótipo — nenhum valor real é transferido.</p>
   `);
@@ -257,6 +306,7 @@ document.getElementById('tab-more').addEventListener('click', () => go('conta'))
 renderRecentes();
 renderVendas();
 renderChart();
+carregarConta();
 
 window.addEventListener('load', () => {
   setTimeout(() => {
@@ -280,6 +330,10 @@ setInterval(() => {
   nova.status = 'Pago';
   VENDAS.unshift(nova);
   if (VENDAS.length > 80) VENDAS.pop();
+  // cada venda aprovada libera valor para saque
+  conta.available += nova.valor;
+  renderSaldos();
+  salvarConta();
   renderRecentes();
   if (document.querySelector('[data-screen="vendas"]').classList.contains('active')) renderVendas();
 }, 22000);

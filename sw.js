@@ -1,5 +1,5 @@
-/* PagFlux service worker — cache offline simples */
-const CACHE = 'pagflux-v6';
+/* PagFlux service worker — network-first p/ app shell, cache p/ offline */
+const CACHE = 'pagflux-v7';
 const ASSETS = [
   './',
   './index.html',
@@ -24,14 +24,31 @@ self.addEventListener('activate', e => {
 });
 
 self.addEventListener('fetch', e => {
-  if (e.request.method !== 'GET') return;
-  e.respondWith(
-    caches.match(e.request).then(cached =>
-      cached || fetch(e.request).then(res => {
+  const req = e.request;
+  if (req.method !== 'GET') return;
+
+  const url = new URL(req.url);
+  const isShell = req.mode === 'navigate' || /\.(?:js|css|webmanifest)$/.test(url.pathname);
+
+  if (isShell) {
+    // Network-first: sempre tenta a versão nova; cai pro cache só se offline.
+    e.respondWith(
+      fetch(req).then(res => {
         const copy = res.clone();
-        caches.open(CACHE).then(c => c.put(e.request, copy)).catch(() => {});
+        caches.open(CACHE).then(c => c.put(req, copy)).catch(() => {});
         return res;
-      }).catch(() => caches.match('./index.html'))
-    )
-  );
+      }).catch(() => caches.match(req).then(c => c || caches.match('./index.html')))
+    );
+  } else {
+    // Imagens/ícones: cache-first (são imutáveis).
+    e.respondWith(
+      caches.match(req).then(cached =>
+        cached || fetch(req).then(res => {
+          const copy = res.clone();
+          caches.open(CACHE).then(c => c.put(req, copy)).catch(() => {});
+          return res;
+        })
+      )
+    );
+  }
 });

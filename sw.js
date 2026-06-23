@@ -1,5 +1,5 @@
 /* PagFlux service worker — cache offline simples */
-const CACHE = 'pagflux-v4';
+const CACHE = 'pagflux-v5';
 const ASSETS = [
   './',
   './index.html',

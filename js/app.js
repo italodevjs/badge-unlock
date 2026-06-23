@@ -198,19 +198,19 @@ document.querySelectorAll('.wd-quick button').forEach(b =>
 
 document.getElementById('btn-withdraw').addEventListener('click', () => {
   const valor = parseFloat((wdInput.value || '0').replace(/\./g, '').replace(',', '.'));
+  const chave = document.getElementById('pix-key').value.trim();
+  const tipo = document.getElementById('pix-type').value;
   if (!valor || valor <= 0) return toast('Digite um valor para sacar.');
   if (valor > DISPONIVEL) return toast('Valor acima do disponível.');
+  if (!chave) return toast('Informe a chave PIX de destino.');
   openSheet(`
     <h3>Saque solicitado</h3>
-    <p>${BRL(valor)} será enviado via PIX para <b>caetanoitalo69@icloud.com</b>. Normalmente cai em segundos.</p>
+    <p>${BRL(valor)} será enviado via PIX (${tipo}) para <b>${chave}</b>. Normalmente cai em segundos.</p>
     <button class="btn-primary" onclick="closeSheet()">Entendi</button>
     <p style="margin-top:14px;text-align:center;opacity:.5;font-size:11px">Protótipo — nenhum valor real é transferido.</p>
   `);
   wdInput.value = '';
 });
-
-document.getElementById('change-pix').addEventListener('click', () =>
-  toast('Gerenciamento de chaves PIX (demo).'));
 
 /* ---------- Cobrar (link de pagamento) ---------- */
 document.getElementById('qa-cobrar').addEventListener('click', () => {

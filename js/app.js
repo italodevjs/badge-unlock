@@ -205,7 +205,7 @@ document.getElementById('btn-withdraw').addEventListener('click', () => {
   if (!chave) return toast('Informe a chave PIX de destino.');
   openSheet(`
     <h3>Saque solicitado</h3>
-    <p>${BRL(valor)} será enviado via PIX (${tipo}) para <b>${chave}</b>. Normalmente cai em segundos.</p>
+    <p>${BRL(valor)} será enviado via PIX (${tipo}) para <b>${chave}</b>. O prazo de compensação varia de alguns minutos a alguns dias úteis.</p>
     <button class="btn-primary" onclick="closeSheet()">Entendi</button>
     <p style="margin-top:14px;text-align:center;opacity:.5;font-size:11px">Protótipo — nenhum valor real é transferido.</p>
   `);

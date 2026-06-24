@@ -1,5 +1,5 @@
 /* PagFlux service worker — network-first p/ app shell, cache p/ offline */
-const CACHE = 'pagflux-v10';
+const CACHE = 'pagflux-v11';
 const ASSETS = [
   './',
   './index.html',
@@ -28,6 +28,9 @@ self.addEventListener('fetch', e => {
   if (req.method !== 'GET') return;
 
   const url = new URL(req.url);
+  // Só intercepta o mesmo domínio. API do Supabase / CDNs sempre vão direto à rede (nunca cacheia).
+  if (url.origin !== self.location.origin) return;
+
   const isShell = req.mode === 'navigate' || /\.(?:js|css|webmanifest)$/.test(url.pathname);
 
   if (isShell) {

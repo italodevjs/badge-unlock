@@ -250,17 +250,55 @@ document.getElementById('btn-withdraw').addEventListener('click', () => {
   conta.pending = Math.max(0, conta.pending - valor);
   renderSaldos();
   salvarConta();
-  if (sb) sb.from('pagflux_withdrawals').insert({ amount: valor, pix_type: tipo, pix_key: chave }).then(() => {}, () => {});
+  // registra o saque como PENDENTE (aguardando aprovação)
+  if (sb) sb.from('pagflux_withdrawals').insert({ amount: valor, pix_type: tipo, pix_key: chave, status: 'pendente' }).then(() => {}, () => {});
 
   openSheet(`
     <h3>Saque solicitado</h3>
-    <p>${BRL(valor)} será enviado via PIX (${tipo}) para <b>${chave}</b>. O prazo de compensação varia de alguns minutos a alguns dias úteis.</p>
-    <p style="margin-top:8px">Disponível restante: <b>${BRL(conta.available)}</b></p>
+    <p>${BRL(valor)} via PIX (${tipo}) para <b>${chave}</b>.</p>
+    <p style="margin-top:8px">Status: <b style="color:var(--warn)">Pendente</b> — aguardando aprovação.</p>
+    <p style="margin-top:4px">Disponível restante: <b>${BRL(conta.available)}</b></p>
     <button class="btn-primary" onclick="closeSheet()">Entendi</button>
     <p style="margin-top:14px;text-align:center;opacity:.5;font-size:11px">Protótipo — nenhum valor real é transferido.</p>
   `);
   wdInput.value = '';
 });
+
+/* ---------- Histórico de saques (lê do banco) ---------- */
+async function abrirSaques() {
+  openSheet('<h3>Histórico de saques</h3><p>Carregando…</p>');
+  if (!sb) {
+    document.getElementById('sheet-content').innerHTML =
+      '<h3>Histórico de saques</h3><p>Sem conexão com o banco no momento.</p>';
+    return;
+  }
+  let linhas = '';
+  try {
+    const { data } = await sb.from('pagflux_withdrawals')
+      .select('amount,pix_type,pix_key,status,created_at')
+      .order('created_at', { ascending: false }).limit(30);
+    if (data && data.length) {
+      linhas = data.map(w => {
+        const d = new Date(w.created_at).toLocaleString('pt-BR');
+        return `<li class="tx" style="padding:12px 0;border-bottom:1px solid var(--line)">
+          <div class="tx-main">
+            <div class="tx-title">${BRL(Number(w.amount))}</div>
+            <div class="tx-sub">${w.pix_type} • ${w.pix_key} • ${d}</div>
+          </div>
+          <div class="tx-right"><div class="tx-status st-${w.status === 'pendente' ? 'Pendente' : 'Pago'}">${w.status}</div></div>
+        </li>`;
+      }).join('');
+    } else {
+      linhas = '<li style="text-align:center;color:var(--muted);padding:24px">Nenhum saque ainda.</li>';
+    }
+  } catch (_) {
+    linhas = '<li style="text-align:center;color:var(--muted);padding:24px">Erro ao carregar.</li>';
+  }
+  document.getElementById('sheet-content').innerHTML =
+    `<h3>Histórico de saques</h3><ul class="tx-list" style="max-height:55vh;overflow:auto">${linhas}</ul>
+     <button class="btn-primary" onclick="closeSheet()" style="margin-top:14px">Fechar</button>`;
+}
+document.getElementById('menu-saques')?.addEventListener('click', abrirSaques);
 
 /* ---------- Cobrar (link de pagamento) ---------- */
 document.getElementById('qa-cobrar').addEventListener('click', () => {

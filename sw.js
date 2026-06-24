@@ -1,5 +1,5 @@
 /* PagFlux service worker — network-first p/ app shell, cache p/ offline */
-const CACHE = 'pagflux-v9';
+const CACHE = 'pagflux-v10';
 const ASSETS = [
   './',
   './index.html',

@@ -335,10 +335,45 @@ function qrSVG() {
     ${finder(0, 0)}${finder(cell * 14, 0)}${finder(0, cell * 14)}</svg>`;
 }
 
+/* ---------- Relatório de vendas (download CSV) ---------- */
+function baixarRelatorio() {
+  const SEP = ';';
+  const esc = s => `"${String(s).replace(/"/g, '""')}"`;
+  const cab = ['ID', 'Produto', 'Cliente', 'Metodo', 'Valor (R$)', 'Status', 'Data/Hora'];
+  const linhas = VENDAS.map(v => [
+    v.id, v.produto, v.cliente, v.metodo,
+    Number(v.valor).toFixed(2).replace('.', ','),
+    v.status, new Date(v.ts).toLocaleString('pt-BR'),
+  ]);
+  // resumo no rodapé
+  const total = VENDAS.reduce((s, v) => s + (v.status !== 'Estornado' ? v.valor : 0), 0);
+  const pagas = VENDAS.filter(v => v.status === 'Pago').length;
+  const csv = [cab, ...linhas]
+    .map(r => r.map(esc).join(SEP)).join('\r\n')
+    + `\r\n\r\n${esc('Total de vendas')}${SEP}${esc(VENDAS.length)}`
+    + `\r\n${esc('Vendas pagas')}${SEP}${esc(pagas)}`
+    + `\r\n${esc('Faturamento (R$)')}${SEP}${esc(total.toFixed(2).replace('.', ','))}`;
+
+  const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `relatorio-vendas-${new Date().toISOString().slice(0, 10)}.csv`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  toast('Relatório baixado.');
+}
+
 /* ---------- Botões diversos ---------- */
 document.getElementById('qa-extrato').addEventListener('click', () => go('vendas'));
 document.getElementById('btn-bell').addEventListener('click', () => toast('Nenhuma notificação nova.'));
-document.getElementById('btn-filter')?.addEventListener('click', () => toast('Filtros avançados (demo).'));
+document.getElementById('btn-report')?.addEventListener('click', baixarRelatorio);
+document.getElementById('btn-report-top')?.addEventListener('click', baixarRelatorio);
+document.querySelectorAll('.menu li').forEach(li => {
+  if (li.textContent.includes('Relatórios')) li.addEventListener('click', baixarRelatorio);
+});
 document.getElementById('tab-more').addEventListener('click', () => go('conta'));
 
 /* ---------- Init ---------- */

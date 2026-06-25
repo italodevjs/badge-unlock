@@ -140,7 +140,7 @@
     <section class="screen" data-screen="vendas">
       <header class="topbar simple">
         <h2>Vendas</h2>
-        <button class="icon-btn" id="btn-filter">⚙️</button>
+        <button class="icon-btn" id="btn-report-top" aria-label="Baixar relatório"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M4 21h16"/></svg></button>
       </header>
       <div class="screen-body">
         <div class="chips" id="chips">
@@ -149,6 +149,10 @@
           <button class="chip" data-filter="Pendente">Pendentes</button>
           <button class="chip" data-filter="Estornado">Estornadas</button>
         </div>
+        <button class="btn-report" id="btn-report">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M4 21h16"/></svg>
+          Baixar relatório de vendas (CSV)
+        </button>
         <ul class="tx-list big" id="sales-list"></ul>
         <div class="spacer"></div>
       </div>
